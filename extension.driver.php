@@ -24,15 +24,29 @@ use pointybeard\Symphony\Extensions\EmailQueue;
 if (!class_exists('\\Extension_EmailQueue')) {
     final class Extension_EmailQueue extends Extended\AbstractExtension
     {
+        public function registerEmailProviders(): void
+        {
+            // Register all providers
+            (new EmailQueue\ProviderIterator())->each(function (EmailQueue\AbstractProvider $p) {
+                $p->register();
+            });
+        }
+
+        public function update($previousVersion = false): bool
+        {
+            parent::update($previousVersion);
+
+            $this->registerEmailProviders();
+
+            return true;
+        }
+
         public function install(): bool
         {
             // Check dependencies
             parent::install();
 
-            // Register all providers
-            (new EmailQueue\ProviderIterator())->each(function (EmailQueue\AbstractProvider $p) {
-                $p->register();
-            });
+            $this->registerEmailProviders();
 
             return true;
         }
