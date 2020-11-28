@@ -1,0 +1,34 @@
+{
+    "id": "emailqueue",
+    "name": "Email Queue",
+    "description": "Extension for Symphony CMS that adds an email queue system.",
+    "repo": "https://github.com/pointybeard/symext-email-queue.git",
+    "homepage": "https://github.com/pointybeard/symext-email-queue",
+    "type": [
+        "Utility"
+    ],
+    "authors": [
+        {
+            "name": "Alannah Kearney",
+            "email": "hi@alannahkearney.com",
+            "homepage": "http://alannahkearney.com",
+            "role": "Developer"
+        }
+    ],
+    "require": [
+        "console",
+        "settings",
+        "numberfield",
+        "uuidfield",
+        "uniqueinputfield",
+        "selectbox_link_field"
+    ],
+    "releases": [
+        {
+            "version": "0.1.0",
+            "date": "2020-02-22",
+            "min": "2.7.10",
+            "max": "2.x.x"
+        }
+    ]
+}

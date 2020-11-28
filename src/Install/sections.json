@@ -1,0 +1,515 @@
+{
+    "sections": [
+        {
+            "navigationGroup": "Email",
+            "allowFiltering": false,
+            "hideFromBackendNavigation": false,
+            "sortOrder": 6,
+            "handle": "email-template-fields",
+            "name": "Template Fields",
+            "fields": [
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 1,
+                    "elementName": "default-value",
+                    "label": "Default Value",
+                    "type": "input",
+                    "custom": {
+                        "validator": ""
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 0,
+                    "elementName": "name",
+                    "label": "Name",
+                    "type": "input",
+                    "custom": {
+                        "validator": ""
+                    }
+                }
+            ],
+            "associations": []
+        },
+        {
+            "navigationGroup": "Email",
+            "allowFiltering": false,
+            "hideFromBackendNavigation": false,
+            "sortOrder": 7,
+            "handle": "email-providers",
+            "name": "Providers",
+            "fields": [
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 2,
+                    "elementName": "classname",
+                    "label": "Classname",
+                    "type": "input",
+                    "custom": {
+                        "validator": "/^(?:\\\\{1,2}\\w+|\\w+\\\\{1,2})(?:\\w+\\\\{0,2}\\w+)+$/i"
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 1,
+                    "elementName": "name",
+                    "label": "Name",
+                    "type": "uniqueinput",
+                    "custom": {
+                        "validator": "",
+                        "autoUnique": false
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 0,
+                    "elementName": "uuid",
+                    "label": "UUID",
+                    "type": "uuid",
+                    "custom": []
+                }
+            ],
+            "associations": []
+        },
+        {
+            "navigationGroup": "Email",
+            "allowFiltering": false,
+            "hideFromBackendNavigation": false,
+            "sortOrder": 5,
+            "handle": "email-templates",
+            "name": "Templates",
+            "fields": [
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 2,
+                    "elementName": "external-template-uid",
+                    "label": "External Template UID",
+                    "type": "input",
+                    "custom": {
+                        "validator": ""
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 1,
+                    "elementName": "fields",
+                    "label": "Fields",
+                    "type": "selectbox_link",
+                    "custom": {
+                        "allowMultipleSelection": true,
+                        "hideWhenPrepopulated": false,
+                        "limit": 40,
+                        "relatedFieldId": {
+                            "section": "email-template-fields",
+                            "field": "name"
+                        }
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 0,
+                    "elementName": "name",
+                    "label": "Name",
+                    "type": "uniqueinput",
+                    "custom": {
+                        "validator": "",
+                        "autoUnique": false
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 3,
+                    "elementName": "provider",
+                    "label": "Provider",
+                    "type": "selectbox_link",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "hideWhenPrepopulated": false,
+                        "limit": 20,
+                        "relatedFieldId": {
+                            "section": "email-providers",
+                            "field": "name"
+                        }
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 4,
+                    "elementName": "uuid",
+                    "label": "UUID",
+                    "type": "uuid",
+                    "custom": []
+                }
+            ],
+            "associations": [
+                {
+                    "hideAssociation": false,
+                    "interface": null,
+                    "editor": null,
+                    "parent": {
+                        "section": "email-template-fields",
+                        "field": "name"
+                    },
+                    "child": {
+                        "section": "email-templates",
+                        "field": "fields"
+                    }
+                },
+                {
+                    "hideAssociation": true,
+                    "interface": null,
+                    "editor": null,
+                    "parent": {
+                        "section": "email-providers",
+                        "field": "name"
+                    },
+                    "child": {
+                        "section": "email-templates",
+                        "field": "provider"
+                    }
+                }
+            ]
+        },
+        {
+            "navigationGroup": "Email",
+            "allowFiltering": true,
+            "hideFromBackendNavigation": false,
+            "sortOrder": 2,
+            "handle": "emails",
+            "name": "Emails",
+            "fields": [
+                {
+                    "required": true,
+                    "showColumn": false,
+                    "location": "main",
+                    "sortOrder": 1,
+                    "elementName": "data",
+                    "label": "Data",
+                    "type": "textarea",
+                    "custom": {
+                        "size": 15,
+                        "formatter": ""
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 2,
+                    "elementName": "date-created",
+                    "label": "Date Created",
+                    "type": "date",
+                    "custom": {
+                        "prePopulate": "",
+                        "calendar": false,
+                        "time": true
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 3,
+                    "elementName": "date-sent",
+                    "label": "Date Sent",
+                    "type": "date",
+                    "custom": {
+                        "prePopulate": "",
+                        "calendar": false,
+                        "time": true
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 0,
+                    "elementName": "recipient",
+                    "label": "Recipient",
+                    "type": "input",
+                    "custom": {
+                        "validator": "/^\\w(?:\\.?[\\w%+-]+)*@\\w(?:[\\w-]*\\.)+?[a-z]{2,}$/i"
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 4,
+                    "elementName": "template",
+                    "label": "Template",
+                    "type": "selectbox_link",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "hideWhenPrepopulated": false,
+                        "limit": 20,
+                        "relatedFieldId": {
+                            "section": "email-templates",
+                            "field": "name"
+                        }
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 5,
+                    "elementName": "uuid",
+                    "label": "UUID",
+                    "type": "uuid",
+                    "custom": []
+                }
+            ],
+            "associations": [
+                {
+                    "hideAssociation": true,
+                    "interface": null,
+                    "editor": null,
+                    "parent": {
+                        "section": "email-templates",
+                        "field": "name"
+                    },
+                    "child": {
+                        "section": "emails",
+                        "field": "template"
+                    }
+                }
+            ]
+        },
+        {
+            "navigationGroup": "Email",
+            "allowFiltering": true,
+            "hideFromBackendNavigation": false,
+            "sortOrder": 3,
+            "handle": "email-logs",
+            "name": "Logs",
+            "fields": [
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 0,
+                    "elementName": "date",
+                    "label": "Date",
+                    "type": "date",
+                    "custom": {
+                        "prePopulate": "",
+                        "calendar": false,
+                        "time": true
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 1,
+                    "elementName": "email",
+                    "label": "Email",
+                    "type": "selectbox_link",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "hideWhenPrepopulated": false,
+                        "limit": 20,
+                        "relatedFieldId": {
+                            "section": "emails",
+                            "field": "uuid"
+                        }
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "main",
+                    "sortOrder": 2,
+                    "elementName": "message",
+                    "label": "Message",
+                    "type": "input",
+                    "custom": {
+                        "validator": ""
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": false,
+                    "location": "main",
+                    "sortOrder": 3,
+                    "elementName": "payload",
+                    "label": "Payload",
+                    "type": "textarea",
+                    "custom": {
+                        "size": 15,
+                        "formatter": ""
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 4,
+                    "elementName": "status",
+                    "label": "Status",
+                    "type": "select",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "sortOptions": true,
+                        "staticOptions": "Sent,Failed"
+                    }
+                }
+            ],
+            "associations": [
+                {
+                    "hideAssociation": false,
+                    "interface": null,
+                    "editor": null,
+                    "parent": {
+                        "section": "emails",
+                        "field": "uuid"
+                    },
+                    "child": {
+                        "section": "email-logs",
+                        "field": "email"
+                    }
+                }
+            ]
+        },
+        {
+            "navigationGroup": "Email",
+            "allowFiltering": true,
+            "hideFromBackendNavigation": false,
+            "sortOrder": 4,
+            "handle": "email-queue",
+            "name": "Queue",
+            "fields": [
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 0,
+                    "elementName": "date-queued",
+                    "label": "Date Queued",
+                    "type": "date",
+                    "custom": {
+                        "prePopulate": "",
+                        "calendar": false,
+                        "time": true
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 1,
+                    "elementName": "email",
+                    "label": "Email",
+                    "type": "selectbox_link",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "hideWhenPrepopulated": false,
+                        "limit": 20,
+                        "relatedFieldId": {
+                            "section": "emails",
+                            "field": "recipient"
+                        }
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 2,
+                    "elementName": "priority",
+                    "label": "Priority",
+                    "type": "select",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "sortOptions": false,
+                        "staticOptions": "(2) Normal,(1) High,(3) Low"
+                    }
+                },
+                {
+                    "required": false,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 3,
+                    "elementName": "send-date",
+                    "label": "Next Attempt to Send",
+                    "type": "date",
+                    "custom": {
+                        "prePopulate": "",
+                        "calendar": false,
+                        "time": true
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 4,
+                    "elementName": "sent-attempts",
+                    "label": "Remaining Send Attempts",
+                    "type": "number",
+                    "custom": []
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 5,
+                    "elementName": "status",
+                    "label": "Status",
+                    "type": "select",
+                    "custom": {
+                        "allowMultipleSelection": false,
+                        "sortOptions": true,
+                        "staticOptions": "Queued,Failed,Held"
+                    }
+                },
+                {
+                    "required": true,
+                    "showColumn": true,
+                    "location": "sidebar",
+                    "sortOrder": 6,
+                    "elementName": "uuid",
+                    "label": "UUID",
+                    "type": "uuid",
+                    "custom": []
+                }
+            ],
+            "associations": [
+                {
+                    "hideAssociation": false,
+                    "interface": null,
+                    "editor": null,
+                    "parent": {
+                        "section": "emails",
+                        "field": "recipient"
+                    },
+                    "child": {
+                        "section": "email-queue",
+                        "field": "email"
+                    }
+                }
+            ]
+        }
+    ]
+}
