@@ -22,13 +22,13 @@ This is an extension for [Symphony CMS][ext-Symphony CMS]. Add it to the `/exten
 
 ```bash
 $ git clone --depth 1 https://github.com/pointybeard/symext-email-queue.git emailqueue
-$ composer update -vv --profile -d ./emailqueue
+$ composer update -vv --profile --no-dev --no-cache -d ./emailqueue
 ```
-After finishing the steps above, enable "Extension Template" though the administration interface or, if using [Orchestra][ext-Orchestra], with `bin/extension enable emailqueue`.
+After finishing the steps above, enable "Email Queue" though the administration interface or, if using [Orchestra][ext-Orchestra], with `bin/extension enable emailqueue`.
 
 ### With Orchestra
 
-1. Add the following extension defintion to your `.orchestra/build.json` file in the `"extensions"` block:
+1. Add the following extension definition to your `.orchestra/build.json` file in the `"extensions"` block:
 
 ```json
     ...
@@ -42,6 +42,36 @@ After finishing the steps above, enable "Extension Template" though the administ
     ...
 ```
 
+2. If necessary, also add the required extensions. This must go ABOVE the emailqueue definition:
+
+```json
+    {
+        "repository": {
+            "url": "https://github.com/pointybeard/settings.git"
+        }
+    },
+    {
+        "repository": {
+            "url": "https://github.com/symphonycms/uniqueinputfield.git"
+        }
+    },
+    {
+        "repository": {
+            "url": "https://github.com/pointybeard/uuidfield.git"
+        }
+    },
+    {
+        "repository": {
+            "url": "https://github.com/symphonycms/numberfield.git"
+        }
+    },
+    {
+        "repository": {
+            "url": "https://github.com/symphonists/association_field.git"
+        }
+    },
+```
+
 2. Run the following command to rebuild your Extensions
 
 ```bash
@@ -50,9 +80,8 @@ $ orchestra build \
     --database-skip-import-data \
     --database-skip-import-structure \
     --skip-create-author \
-    --skip-skip-seeders \
+    --skip-seeders \
     --skip-git-reset \
-    --skip-composer \
     --skip-postbuild
 ```
 
@@ -71,7 +100,7 @@ $ orchestra build \
     -   [Number Field][req-numberfield]
     -   [UUID Field][req-uuidfield]
     -   [Unique Text Input Field][req-uniqueinputfield]
-    -   [Select Box Link Field][req-selectbox_link_field]
+    -   [Association Field][req-association_field]
 
 ### Dependencies
 
@@ -110,7 +139,7 @@ We encourage you to contribute to this project. Please check out the [Contributi
 [req-numberfield]: https://github.com/symphonycms/numberfield
 [req-uuidfield]: https://github.com/pointybeard/uuidfield
 [req-uniqueinputfield]: https://github.com/symphonycms/uniqueinputfield
-[req-selectbox_link_field]: https://github.com/symphonycms/selectbox_link_field
+[req-association_field]: https://github.com/symphonists/association_field
 [dep-helpers]: https://github.com/pointybeard/helpers
 [dep-postmark]: https://github.com/wildbit/postmark-php
 [dep-classmapper]: https://github.com/pointybeard/symphony-classmapper

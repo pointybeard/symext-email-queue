@@ -4,7 +4,6 @@
             "navigationGroup": "Email",
             "allowFiltering": false,
             "hideFromBackendNavigation": false,
-            "sortOrder": 6,
             "handle": "email-template-fields",
             "name": "Template Fields",
             "fields": [
@@ -39,7 +38,6 @@
             "navigationGroup": "Email",
             "allowFiltering": false,
             "hideFromBackendNavigation": false,
-            "sortOrder": 7,
             "handle": "email-providers",
             "name": "Providers",
             "fields": [
@@ -85,7 +83,6 @@
             "navigationGroup": "Email",
             "allowFiltering": false,
             "hideFromBackendNavigation": false,
-            "sortOrder": 5,
             "handle": "email-templates",
             "name": "Templates",
             "fields": [
@@ -108,7 +105,7 @@
                     "sortOrder": 1,
                     "elementName": "fields",
                     "label": "Fields",
-                    "type": "selectbox_link",
+                    "type": "association",
                     "custom": {
                         "allowMultipleSelection": true,
                         "hideWhenPrepopulated": false,
@@ -139,7 +136,7 @@
                     "sortOrder": 3,
                     "elementName": "provider",
                     "label": "Provider",
-                    "type": "selectbox_link",
+                    "type": "association",
                     "custom": {
                         "allowMultipleSelection": false,
                         "hideWhenPrepopulated": false,
@@ -194,7 +191,6 @@
             "navigationGroup": "Email",
             "allowFiltering": true,
             "hideFromBackendNavigation": false,
-            "sortOrder": 2,
             "handle": "emails",
             "name": "Emails",
             "fields": [
@@ -258,7 +254,7 @@
                     "sortOrder": 4,
                     "elementName": "template",
                     "label": "Template",
-                    "type": "selectbox_link",
+                    "type": "association",
                     "custom": {
                         "allowMultipleSelection": false,
                         "hideWhenPrepopulated": false,
@@ -300,7 +296,6 @@
             "navigationGroup": "Email",
             "allowFiltering": true,
             "hideFromBackendNavigation": false,
-            "sortOrder": 3,
             "handle": "email-logs",
             "name": "Logs",
             "fields": [
@@ -325,7 +320,7 @@
                     "sortOrder": 1,
                     "elementName": "email",
                     "label": "Email",
-                    "type": "selectbox_link",
+                    "type": "association",
                     "custom": {
                         "allowMultipleSelection": false,
                         "hideWhenPrepopulated": false,
@@ -396,7 +391,6 @@
             "navigationGroup": "Email",
             "allowFiltering": true,
             "hideFromBackendNavigation": false,
-            "sortOrder": 4,
             "handle": "email-queue",
             "name": "Queue",
             "fields": [
@@ -421,7 +415,7 @@
                     "sortOrder": 1,
                     "elementName": "email",
                     "label": "Email",
-                    "type": "selectbox_link",
+                    "type": "association",
                     "custom": {
                         "allowMultipleSelection": false,
                         "hideWhenPrepopulated": false,

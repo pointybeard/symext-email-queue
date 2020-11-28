@@ -14,6 +14,6 @@
         </author>
     </authors>
     <releases>
-        <release version="0.1.0" date="2020-02-22" min="2.7.10" />
+        <release version="1.0.0" date="2020-11-28" min="2.7.10" />
     </releases>
 </extension>

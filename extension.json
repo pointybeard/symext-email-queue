@@ -21,12 +21,12 @@
         "numberfield",
         "uuidfield",
         "uniqueinputfield",
-        "selectbox_link_field"
+        "association_field"
     ],
     "releases": [
         {
-            "version": "0.1.0",
-            "date": "2020-02-22",
+            "version": "1.0.0",
+            "date": "2020-11-28",
             "min": "2.7.10",
             "max": "2.x.x"
         }
