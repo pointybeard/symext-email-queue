@@ -15,7 +15,7 @@ namespace pointybeard\Symphony\Extensions\EmailQueue\Exceptions;
 
 use pointybeard\Helpers\Exceptions\ReadableTrace;
 
-class EmailQueueExceptionException extends ReadableTrace\ReadableTraceException
+class EmailQueueException extends ReadableTrace\ReadableTraceException
 {
     public function getReadableTrace(string $format = '[{{PATH}}/{{FILENAME}}:{{LINE}}] {{CLASS}}{{TYPE}}{{FUNCTION}}();'): ?string
     {
