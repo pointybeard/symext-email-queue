@@ -34,6 +34,8 @@ final class Mailchimp extends EmailQueue\AbstractProvider
             );
 
             //$client = new PostmarkClient($credentials->find('apikey'));
+            $client = new MailchimpTransactional\ApiClient();
+            $mailchimp->setApiKey($credentials->find('apikey'));
 
             $this->broadcast(
                 Console\Symphony::BROADCAST_MESSAGE,
@@ -67,6 +69,22 @@ final class Mailchimp extends EmailQueue\AbstractProvider
             //     $attachments
             // );
 
+
+            $message = [
+                "from_email" => $credentials->find('from'),
+                "subject" => "Hello world",
+                "text" => "Welcome to Mailchimp Transactional!",
+                "to" => [
+                    [
+                        "email" => $recipient,
+                        "type" => "to"
+                    ]
+                ]
+            ];
+
+            // $response = $mailchimp->users->ping();
+            $response = $mailchimp->messages->send(["message" => $message]);
+
             $this->broadcast(
                 Console\Symphony::BROADCAST_MESSAGE,
                 E_NOTICE,
@@ -75,7 +93,7 @@ final class Mailchimp extends EmailQueue\AbstractProvider
                     ->foreground(Colour\Colour::FG_GREEN)
                     ->flags(Message\Message::FLAG_APPEND_NEWLINE)
             );
-        } catch (\Exception $ex) {
+        } catch (\Error | \Exception $ex) {
             $this->broadcast(
                 Console\Symphony::BROADCAST_MESSAGE,
                 E_NOTICE,
