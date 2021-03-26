@@ -1,7 +1,7 @@
 .DS_Store
-vendor/
-tests/reports
+/vendor
+/tests/reports
 .php_cs.cache
 .phpunit.result.cache
 composer.lock
-commands/
+/commands
