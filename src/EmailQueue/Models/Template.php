@@ -54,11 +54,13 @@ final class Template extends Classmapper\AbstractModel implements Classmapper\In
         ];
     }
 
-    public static function loadFromName(string $name): self
+    public static function loadFromName(string $name): ?self
     {
-        return self::fetch(
+        $result = self::fetch(
             Classmapper\FilterFactory::build('Basic', 'name', $name)
         )->current();
+
+        return $result instanceof self ? $result : null;
     }
 
     public function send(string $recipientEmailAddress, Settings\SettingsResultIterator $credentials, array $data = [], array $attachments = [], string $replyTo = null, string $cc = null): void
@@ -101,15 +103,15 @@ final class Template extends Classmapper\AbstractModel implements Classmapper\In
     {
         $fieldIds = $this->fields;
 
-        if (!is_array($fieldIds)) {
-            if (strlen(trim($fieldIds)) <= 0) {
+        if (false == is_array($fieldIds)) {
+            if (strlen(trim((string)$fieldIds)) <= 0) {
                 return null;
             }
 
             // We have the field IDs, but as a CSV string. Need to explode
             // that and then create some custom SQL to pull them all out.
             $fieldIds = explode(',', $fieldIds);
-        } elseif (empty($fieldIds)) {
+        } elseif (true == empty($fieldIds)) {
             return null;
         }
 
