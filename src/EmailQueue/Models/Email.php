@@ -74,7 +74,7 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
         return null !== $this->dateSentAt;
     }
 
-    public function send(Settings\SettingsResultIterator $credentials, bool $forceSend = false, array $attachments = [], string $replyTo = null, string $cc = null): void
+    public function send(?Settings\SettingsResultIterator $credentials = null, bool $forceSend = false, array $attachments = [], string $replyTo = null, string $cc = null): void
     {
         if (false == $forceSend && true == $this->hasBeenSent()) {
             throw new Exceptions\EmailAlreadySentException($this->uuid);
@@ -92,6 +92,10 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
             if (!is_array($data)) {
                 // Bad data
                 throw new \Exception('Invalid data provided to template. Expecting valid JSON.');
+            }
+
+            if(null == $credentials) {
+                $credentials = Settings\Models\Setting::fetchByGroup($template->provider()->name());
             }
 
             $result = $template->send(
