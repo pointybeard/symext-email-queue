@@ -47,6 +47,11 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
                 'classMemberName' => 'dateSentAt',
                 'flags' => self::FLAG_NULL,
             ],
+
+            'data' => [
+                'classMemberName' => 'data',
+                'flags' => self::FLAG_NULL,
+            ],
         ];
     }
 
@@ -74,6 +79,23 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
         return null !== $this->dateSentAt;
     }
 
+    public function save(?int $flags = self::FLAG_ON_SAVE_VALIDATE, string $sectionHandle = null): self
+    {
+        // Check the contents of data to make sure that any required fields (according to the template) are set
+        $this->template()->populateFieldsArrayFromData($this->parseRawDataFieldContents());
+
+        return parent::save($flags, $sectionHandle);
+    }
+
+    protected function parseRawDataFieldContents(): array
+    {
+        try {
+            return json_decode($this->data(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (\Exception $ex){
+            throw new \Exception('Invalid data provided to template. Expecting valid JSON. Returned: ' . $ex->getMessage(), $ex->getCode(), $ex);
+        }
+    }
+
     public function send(?Settings\SettingsResultIterator $credentials = null, bool $forceSend = false, array $attachments = [], string $replyTo = null, string $cc = null): void
     {
         if (false == $forceSend && true == $this->hasBeenSent()) {
@@ -81,17 +103,11 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
         }
 
         try {
+
+            // Make sure template exists
             $template = $this->template();
-
-            // Simple sanitity check. Make sure template exists
-            if (!($template instanceof Template)) {
+            if (false == ($template instanceof Template)) {
                 throw new \Exception('Invalid template specified.');
-            }
-
-            $data = json_decode($this->data, true);
-            if (!is_array($data)) {
-                // Bad data
-                throw new \Exception('Invalid data provided to template. Expecting valid JSON.');
             }
 
             if(null == $credentials) {
@@ -99,9 +115,9 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
             }
 
             $result = $template->send(
-                $this->recipient,
+                $this->recipient(),
                 $credentials,
-                $data,
+                $this->parseRawDataFieldContents(),
                 $attachments,
                 $replyTo,
                 $cc
