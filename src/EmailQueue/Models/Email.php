@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the "Email Queue Extension for Symphony CMS" repository.
  *
- * Copyright 2020 Alannah Kearney <hi@alannahkearney.com>
+ * Copyright 2020-2021 Alannah Kearney <hi@alannahkearney.com>
  *
  * For the full copyright and license information, please view the LICENCE
  * file that was distributed with this source code.
@@ -91,8 +91,8 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
     {
         try {
             return json_decode($this->data(), true, 512, JSON_THROW_ON_ERROR);
-        } catch (\Exception $ex){
-            throw new \Exception('Invalid data provided to template. Expecting valid JSON. Returned: ' . $ex->getMessage(), $ex->getCode(), $ex);
+        } catch (\Exception $ex) {
+            throw new \Exception('Invalid data provided to template. Expecting valid JSON. Returned: '.$ex->getMessage(), $ex->getCode(), $ex);
         }
     }
 
@@ -103,14 +103,13 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
         }
 
         try {
-
             // Make sure template exists
             $template = $this->template();
             if (false == ($template instanceof Template)) {
                 throw new \Exception('Invalid template specified.');
             }
 
-            if(null == $credentials) {
+            if (null == $credentials) {
                 $credentials = Settings\Models\Setting::fetchByGroup($template->provider()->name());
             }
 

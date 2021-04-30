@@ -2,17 +2,24 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the "Email Queue Extension for Symphony CMS" repository.
+ *
+ * Copyright 2020-2021 Alannah Kearney <hi@alannahkearney.com>
+ *
+ * For the full copyright and license information, please view the LICENCE
+ * file that was distributed with this source code.
+ */
+
 namespace pointybeard\Symphony\Extensions\Console\Commands\EmailQueue;
 
-use pointybeard\Symphony\Extensions\Console;
-use pointybeard\Symphony\Extensions\Console\Commands\Console\Symphony;
+use pointybeard\Helpers\Cli\Colour\Colour;
 use pointybeard\Helpers\Cli\Input;
 use pointybeard\Helpers\Cli\Message\Message;
-use pointybeard\Symphony\Extensions\EmailQueue;
-use pointybeard\Symphony\Extensions\EmailQueue\Models;
-use pointybeard\Symphony\Extensions\Settings;
-use pointybeard\Helpers\Cli\Colour\Colour;
 use pointybeard\Helpers\Foundation\BroadcastAndListen;
+use pointybeard\Symphony\Extensions\Console;
+use pointybeard\Symphony\Extensions\Console\Commands\Console\Symphony;
+use pointybeard\Symphony\Extensions\EmailQueue\Models;
 
 class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces\AuthenticatedCommandInterface, BroadcastAndListen\Interfaces\AcceptsListenersInterface
 {
@@ -35,7 +42,7 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
     {
         parent::init();
 
-        $this           
+        $this
             ->addInputToCollection(
                 Input\InputTypeFactory::build('LongOption')
                     ->name('dry')
@@ -56,12 +63,11 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
                     ->flags(Input\AbstractInputType::FLAG_OPTIONAL | Input\AbstractInputType::FLAG_VALUE_REQUIRED)
                     ->description('limit the total number of emails to send')
                     ->validator(function (Input\AbstractInputType $input, Input\AbstractInputHandler $context) {
-
-                        if(false == is_numeric($context->find('limit')) || (int)$context->find('limit') <= 0) {
+                        if (false == is_numeric($context->find('limit')) || (int) $context->find('limit') <= 0) {
                             throw new Console\Exceptions\ConsoleException('limit must be a positive integer');
                         }
-                        
-                        return (int)$context->find('limit');
+
+                        return (int) $context->find('limit');
                     })
                     ->default(null)
             )
@@ -70,27 +76,23 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
 
     public function execute(Input\Interfaces\InputHandlerInterface $input): bool
     {
-
         $skipLiveModeWarning = $input->find('now');
         $isDryRun = $input->find('dry');
         $limit = $input->find('limit');
 
         if (true == $isDryRun) {
-
             $this->broadcast(
                 Symphony::BROADCAST_MESSAGE,
                 E_WARNING,
-                (new Message("Dry run mode active. NO EMAILS WILL BE SENT..."))
+                (new Message('Dry run mode active. NO EMAILS WILL BE SENT...'))
                     ->foreground(Colour::FG_YELLOW)
                     ->flags(Message::FLAG_APPEND_NEWLINE)
             );
-
         } elseif (false == $skipLiveModeWarning) {
-
             $this->broadcast(
                 Symphony::BROADCAST_MESSAGE,
                 E_WARNING,
-                (new Message("Running in live mode. EMAILS WILL BE SENT!! ... "))
+                (new Message('Running in live mode. EMAILS WILL BE SENT!! ... '))
                     ->foreground(Colour::FG_YELLOW)
                     ->flags(Message::FLAG_NONE)
             );
@@ -102,7 +104,7 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
                 $this->broadcast(
                     Symphony::BROADCAST_MESSAGE,
                     E_WARNING,
-                    (new Message("."))
+                    (new Message('.'))
                         ->foreground(Colour::FG_YELLOW)
                         ->flags(Message::FLAG_NONE)
                 );
@@ -111,7 +113,7 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
             $this->broadcast(
                 Symphony::BROADCAST_MESSAGE,
                 E_WARNING,
-                (new Message(""))
+                (new Message(''))
                     ->foreground(Colour::FG_YELLOW)
                     ->flags(Message::FLAG_APPEND_NEWLINE)
             );
@@ -144,6 +146,7 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
                 // already been sent. Delete it and move on
                 $q->delete();
                 ++$count['skipped'];
+
                 continue;
             }
 
@@ -155,9 +158,7 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
                     $q->delete();
                 }
                 ++$count['sent'];
-
             } catch (Exceptions\EmailAlreadySentException $ex) {
-
                 $this->broadcast(
                     Symphony::BROADCAST_MESSAGE,
                     E_WARNING,
@@ -170,8 +171,8 @@ class ProcessQueue extends Console\AbstractCommand implements Console\Interfaces
                 $q->delete();
 
                 ++$count['skipped'];
-                continue;
 
+                continue;
             } catch (\Exception $ex) {
                 $wasRequeued = false;
 
