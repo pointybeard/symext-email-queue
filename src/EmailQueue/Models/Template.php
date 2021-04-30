@@ -71,12 +71,12 @@ final class Template extends Classmapper\AbstractModel implements Classmapper\In
 
         if ($fields instanceof \SymphonyPDO\Lib\ResultIterator) {
             foreach ($fields as $f) {
-                if (!isset($data[$f->name])) {
-                    $data[$f->name] = null;
-                }
+
+                // Make sure each field appears in the data array
+                $data[$f->name] ?? "";
 
                 // Check for a default value
-                if (strlen(trim($data[$f->name])) <= 0 && strlen(trim($f->defaultValue)) > 0) {
+                if (strlen(trim((string)$data[$f->name])) <= 0 && strlen(trim((string)$f->defaultValue)) > 0) {
                     $data[$f->name] = $f->defaultValue;
                 }
             }
