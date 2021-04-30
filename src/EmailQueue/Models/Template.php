@@ -15,6 +15,7 @@ namespace pointybeard\Symphony\Extensions\EmailQueue\Models;
 
 use pointybeard\Symphony\Classmapper;
 use pointybeard\Symphony\Extensions\EmailQueue\Traits;
+use pointybeard\Symphony\Extensions\EmailQueue\Exceptions;
 use pointybeard\Symphony\Extensions\Settings;
 
 final class Template extends Classmapper\AbstractModel implements Classmapper\Interfaces\FilterableModelInterface, Classmapper\Interfaces\SortableModelInterface
@@ -63,31 +64,60 @@ final class Template extends Classmapper\AbstractModel implements Classmapper\In
         return $result instanceof self ? $result : null;
     }
 
-    public function send(string $recipientEmailAddress, Settings\SettingsResultIterator $credentials, array $data = [], array $attachments = [], string $replyTo = null, string $cc = null): void
+    protected static function assertNonEmptyString($input): string
     {
-        // @todo: error handling for any field that has a null value
-        // every field must have a value or have the "allow null" flag set
-        $fields = $this->fields();
-
-        if ($fields instanceof \SymphonyPDO\Lib\ResultIterator) {
-            foreach ($fields as $f) {
-
-                // Make sure each field appears in the data array
-                $data[$f->name] ?? "";
-
-                // Check for a default value
-                if (strlen(trim((string)$data[$f->name])) <= 0 && strlen(trim((string)$f->defaultValue)) > 0) {
-                    $data[$f->name] = $f->defaultValue;
-                }
-            }
+        if(false == is_string($input) || true == empty($input)) {
+            throw new \InvalidArgumentException("Input value expected to be non-empty string.");
         }
 
+        return $input;
+    }
+
+    public function populateFieldsArrayFromData(array $data): array
+    {
+
+        // Guard
+        $fields = $this->fields();
+        if(false == ($fields instanceof \SymphonyPDO\Lib\ResultIterator)) {
+            return $data;
+        }
+
+        $errors = [];
+
+        foreach ($fields as $f) {
+
+            // Make sure each field appears in the data array, even if it's an empty string
+            $data[$f->name] ?? "";
+
+            // Check for a default value
+            if (strlen(trim((string)$data[$f->name])) <= 0 && strlen(trim((string)$f->defaultValue)) > 0) {
+                $data[$f->name] = $f->defaultValue;
+            }
+
+            try {
+                self::assertNonEmptyString($data[$f->name]);
+            } catch(\InvalidArgumentException $ex) {
+                $errors[] = "{$f->name}: Required field is missing or invalid.";
+            }
+
+            if(false == empty($errors)) {
+                throw new Exceptions\EmailQueueException("Populating fields array failed. Returned: " . implode(PHP_EOL, $errors));
+            }
+
+        }
+
+        return $data;
+
+    }
+
+    public function send(string $recipientEmailAddress, Settings\SettingsResultIterator $credentials, array $data = [], array $attachments = [], string $replyTo = null, string $cc = null): void
+    {
         // Send the email via the provider for this template
         $this->provider()->instanciate()->send(
             $credentials,
             $this,
             $recipientEmailAddress,
-            $data,
+            $this->populateFieldsArrayFromData($data),
             $attachments,
             $replyTo,
             $cc
