@@ -4,7 +4,7 @@
     "homepage": "http://alannahkearney.com",
     "license": "MIT",
     "minimum-stability": "stable",
-    "type": "library",    
+    "type": "library",
     "keywords": [
         "php",
         "symphony",
@@ -25,9 +25,10 @@
     "require": {
         "php": ">=7.3",
         "wildbit/postmark-php": "^4.0",
+        "campaignmonitor/createsend-php": "^6.1",
         "pointybeard/helpers": "^1.2.0",
-        "pointybeard/symphony-extended": "^1.0",
         "pointybeard/symphony-classmapper": "^2.0",
+        "pointybeard/symphony-extended": "^1.0",
         "pointybeard/symphony-section-builder": "^0.2.0"
     },
     "require-dev": {
