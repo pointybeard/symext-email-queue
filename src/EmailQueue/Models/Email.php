@@ -113,10 +113,12 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
                 $credentials = Settings\Models\Setting::fetchByGroup($template->provider()->name());
             }
 
+            $data = $this->parseRawDataFieldContents();
+
             $result = $template->send(
                 $this->recipient(),
                 $credentials,
-                $this->parseRawDataFieldContents(),
+                $data,
                 $attachments,
                 $replyTo,
                 $cc
@@ -124,12 +126,12 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
 
             // Sending was successful. Log it.
             (new Log())
-                ->emailId($this->id)
+                ->emailId($this->id())
                 ->dateCreatedAt('now')
                 ->status(Log::STATUS_SENT)
                 ->message(null)
                 ->payload(json_encode([
-                    'recipient' => $this->recipient,
+                    'recipient' => $this->recipient(),
                     'fields' => $data,
                     'template' => $template->__toArray(),
                     'replyTo' => $replyTo,
@@ -145,7 +147,7 @@ final class Email extends Classmapper\AbstractModel implements Classmapper\Inter
                 ->save()
             ;
         } catch (\Exception $ex) {
-            throw new Exceptions\SendingEmailFailedException($ex->getMessage(), $this, $data, $this->recipient, $credentials);
+            throw new Exceptions\SendingEmailFailedException($ex->getMessage(), $this, $data, $this->recipient(), $credentials);
         }
     }
 }
