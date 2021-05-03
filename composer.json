@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": ">=7.3",
-        "wildbit/postmark-php": "^2.0",
+        "wildbit/postmark-php": "^4.0",
         "pointybeard/helpers": "^1.2.0",
         "pointybeard/symphony-extended": "^1.0",
         "pointybeard/symphony-classmapper": "^2.0",
