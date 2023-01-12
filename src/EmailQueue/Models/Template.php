@@ -64,15 +64,6 @@ final class Template extends Classmapper\AbstractModel implements Classmapper\In
         return $result instanceof self ? $result : null;
     }
 
-    protected static function assertNonEmptyString($input): string
-    {
-        if (false == is_string($input) || true == empty($input)) {
-            throw new \InvalidArgumentException('Input value expected to be non-empty string.');
-        }
-
-        return $input;
-    }
-
     public function populateFieldsArrayFromData(array $data): array
     {
         // Guard
@@ -92,9 +83,7 @@ final class Template extends Classmapper\AbstractModel implements Classmapper\In
                 $data[$f->name] = $f->defaultValue;
             }
 
-            try {
-                self::assertNonEmptyString($data[$f->name]);
-            } catch (\InvalidArgumentException $ex) {
+            if (false == is_string($data[$f->name]) && false == is_array($data[$f->name])) {
                 $errors[] = "{$f->name}: Required field is missing or invalid.";
             }
 
